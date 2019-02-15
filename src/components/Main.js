@@ -1,21 +1,26 @@
 import React, { Component } from 'react';
-import {
-  Layout, Menu, Breadcrumb, Icon,
-} from 'antd';
+import { Layout, Menu, Breadcrumb, Icon, } from 'antd';
+import logo from '../logo.svg';
+import RouteConfig from '../router'
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
 
 class Main extends Component {
-  constructor(props){
-    super(props)
-
-  }
+  // constructor(props){
+  //   super(props)
+  // }
   render(){
+    const style = {
+      logo: {
+        float: 'left',
+        width: '150px'
+      }
+    }
     return (
-      <Layout>
+      <Layout style={{ minHeight: '100vh' }}>
         <Header className="header">
-          <div className="logo" />
+          <div className="logo" style={style.logo}><img src={logo} className="App-logo" alt="logo" /></div>
           <Menu
             theme="dark"
             mode="horizontal"
@@ -35,9 +40,9 @@ class Main extends Component {
               defaultOpenKeys={['sub1']}
               style={{ height: '100%', borderRight: 0 }}
             >
-              <SubMenu key="sub1" title={<span><Icon type="user" />subnav 1</span>}>
-                <Menu.Item key="1">option1</Menu.Item>
-                <Menu.Item key="2">option2</Menu.Item>
+              <SubMenu key="sub1" title={<span><Icon type="user" />开发工具</span>}>
+                <Menu.Item key="1">Console.log</Menu.Item>
+                <Menu.Item key="2">Console.time</Menu.Item>
                 <Menu.Item key="3">option3</Menu.Item>
                 <Menu.Item key="4">option4</Menu.Item>
               </SubMenu>
@@ -65,7 +70,7 @@ class Main extends Component {
               background: '#fff', padding: 24, margin: 0, minHeight: 280,
             }}
             >
-              Content
+              <RouteConfig/>
             </Content>
           </Layout>
         </Layout>
