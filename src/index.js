@@ -2,6 +2,9 @@ import React from 'react';
 import ReactDOM from 'react-dom';
 import 'antd/dist/antd.css';
 import './index.css';
+import 'codemirror/lib/codemirror.css';
+import 'codemirror/theme/material.css';
+import 'codemirror/theme/neat.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
 

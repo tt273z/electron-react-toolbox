@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { HashRouter, Switch, Route, Redirect } from 'react-router-dom';
 // import asyncComponent from '@/utils/asyncComponent';
 
-import ConsoleLog from "../components/ConsoleLog";
+import Console from "../components/Console";
 // const record = asyncComponent(() => import("@/pages/record/record"));
 // const helpcenter = asyncComponent(() => import("@/pages/helpcenter/helpcenter"));
 // const production = asyncComponent(() => import("@/pages/production/production"));
@@ -14,7 +14,7 @@ export default class RouteConfig extends Component{
     return(
       <HashRouter>
         <Switch>
-          <Route path="/" exact component={ConsoleLog} />
+          <Route path="/" exact component={Console} />
           {/* <Route path="/record" component={record} />
           <Route path="/helpcenter" component={helpcenter} />
           <Route path="/production" component={production} />
