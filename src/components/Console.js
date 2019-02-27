@@ -9,9 +9,15 @@ class Console extends Component {
   constructor(props){
     super(props)
     this.state = {
-      code: '1+3',
+      code: '//按ctrl代码提示 ',
       outputList: []
     }
+    this.instance = null
+  }
+  componentDidMount = () => {
+    // this.instance.on('cursorActivity', () => {
+    //   this.instance.showHint()
+    // })
   }
   run = () => {
     let res = eval(this.state.code)
@@ -21,6 +27,9 @@ class Console extends Component {
   clearCode = () => {
     this.setState({ code: '' })
   }
+  clearRes = () => {
+    this.setState({ outputList: [] })
+  }
   render(){
     const options = {
       lineNumbers: false,//为true时样式错误?
@@ -29,6 +38,7 @@ class Console extends Component {
       lineWrapping: true, //自动换行
       readOnly: false, //可编辑模式
       autofocus: true, //自动获得焦点
+      extraKeys: {'Ctrl': 'autocomplete'} //按 ctrl 出现代码提示或补全代码
     }
     const style = {
       section: {
@@ -45,15 +55,16 @@ class Console extends Component {
       <div>
         <div>
           <Button type="primary" style={{ margin: '0 16px 16px 0' }} onClick={this.run}>运行</Button>
-          <Button type="primary" onClick={this.clearCode}>清空</Button>          
+          <Button onClick={this.clearCode} style={{ marginRight: 16 }} >清空代码</Button>     
+          <Button onClick={this.clearRes}>清空结果</Button>     
         </div>
         <Row>
           <Col span={12}>
             <CodeMirror 
               value={ this.state.code }
               options={ options } 
-              // onChange={(editor, data, value) => { editor.showHint() }} 
-              onCursorActivity={(editor) => { editor.showHint() }} 
+              // onChange={(editor, data, value) => { }} 
+              // editorDidMount={editor => { this.instance = editor }} //获取codemirror实例
               onBeforeChange={(editor, data, value) => {
                 this.setState({code: value});
               }}
