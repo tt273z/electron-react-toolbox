@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Row, Col } from 'antd'
+import { Button, Row, Col, Upload, Icon } from 'antd'
 import 'codemirror/mode/javascript/javascript.js'; 
 import 'codemirror/addon/hint/show-hint.js'; 
 import 'codemirror/addon/hint/javascript-hint.js'; 
@@ -51,12 +51,37 @@ class Console extends Component {
         background: '#eee'
       }
     }
+    const uploadprops = {
+      // action: '//jsonplaceholder.typicode.com/posts/',
+      customRequest({ file, onSuccess }){
+        setTimeout(() => { onSuccess('ok') }, 0)
+      },
+      onChange({ file, fileList }) {
+        if (file.status !== 'uploading') {
+          console.log(file, fileList);
+        }
+      },
+      defaultFileList: [{
+        uid: '1',
+        name: 'xxx.png',
+        status: 'done',
+        response: 'Server Error 500', // custom error message to show
+      }]
+    }
     return (
       <div>
-        <div>
-          <Button type="primary" style={{ margin: '0 16px 16px 0' }} onClick={this.run}>运行</Button>
-          <Button onClick={this.clearCode} style={{ marginRight: 16 }} >清空代码</Button>     
-          <Button onClick={this.clearRes}>清空结果</Button>     
+        <div className="button-row">
+          <Button type="primary" onClick={this.run}>运行</Button>
+          <Button onClick={this.clearCode}>清空代码</Button>     
+          <Button onClick={this.clearRes}>清空结果</Button>
+          <Button type="dashed">
+            <Icon type="plus-circle" />CDN
+          </Button>
+          <Upload {...uploadprops}>
+            <Button type="dashed">
+              <Icon type="plus-circle" />本地库
+            </Button>
+          </Upload>
         </div>
         <Row>
           <Col span={12}>

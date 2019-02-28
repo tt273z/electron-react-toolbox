@@ -1,3 +1,6 @@
+.margin-right {
+  margin-right: 16px;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 50px;
@@ -12,6 +15,13 @@
   to {
     transform: rotate(360deg);
   }
+}
+/* console page */
+.button-row button {
+  margin-right: 16px;
+}
+.button-row {
+  margin-bottom: 16px;
 }
 
 .output p {
@@ -32,4 +42,10 @@
   border-style: solid;
   border-width: 4px 0 4px 5px;
   border-color: transparent transparent transparent #9E9E9E;  
+}
+.CodeMirror-code {
+  font-family: consolas;
+}
+.ant-upload-list {
+  width: 200px;
 }
