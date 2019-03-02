@@ -4,21 +4,18 @@ import 'codemirror/mode/javascript/javascript.js';
 import 'codemirror/addon/hint/show-hint.js'; 
 import 'codemirror/addon/hint/javascript-hint.js'; 
 import { Controlled as CodeMirror } from 'react-codemirror2';
-
+//TODO 1. code敏感字符过滤 2. 弹窗添加cdn 3. 本地文件?
 class Console extends Component {
   constructor(props){
     super(props)
     this.state = {
       code: '//按ctrl代码提示 ',
-      outputList: []
+      outputList: [], //code执行结果list
+	  fileList: [] //上传文件list
     }
-    this.instance = null
+    //this.instance = null
   }
-  componentDidMount = () => {
-    // this.instance.on('cursorActivity', () => {
-    //   this.instance.showHint()
-    // })
-  }
+  //componentDidMount = () => {}
   run = () => {
     let res = eval(this.state.code)
     this.state.outputList.push(res)
@@ -29,6 +26,13 @@ class Console extends Component {
   }
   clearRes = () => {
     this.setState({ outputList: [] })
+  }
+  addCDN = () => {
+	this.state.fileList.push({ name: '??', status: 'done' })
+	this.setState({ fileList: this.state.fileList })
+  }
+  onFileChange = ({fileList}) => {
+	this.setState({fileList})
   }
   render(){
     const options = {
@@ -56,17 +60,6 @@ class Console extends Component {
       customRequest({ file, onSuccess }){
         setTimeout(() => { onSuccess('ok') }, 0)
       },
-      onChange({ file, fileList }) {
-        if (file.status !== 'uploading') {
-          console.log(file, fileList);
-        }
-      },
-      defaultFileList: [{
-        uid: '1',
-        name: 'xxx.png',
-        status: 'done',
-        response: 'Server Error 500', // custom error message to show
-      }]
     }
     return (
       <div>
@@ -74,10 +67,10 @@ class Console extends Component {
           <Button type="primary" onClick={this.run}>运行</Button>
           <Button onClick={this.clearCode}>清空代码</Button>     
           <Button onClick={this.clearRes}>清空结果</Button>
-          <Button type="dashed">
+          <Button type="dashed" onClick={this.addCDN}>
             <Icon type="plus-circle" />CDN
           </Button>
-          <Upload {...uploadprops}>
+          <Upload {...uploadprops} fileList={this.state.fileList} onChange={this.onFileChange}>
             <Button type="dashed">
               <Icon type="plus-circle" />本地库
             </Button>
@@ -103,6 +96,14 @@ class Console extends Component {
             </div>
           </Col>
         </Row>
+		<Modal
+          title="输入要添加的CDN地址"
+          visible={this.state.visible}
+          onOk={this.handleOk}
+          onCancel={this.handleCancel}
+        >
+          <p>Some contents...</p>
+        </Modal>
       </div>
     )
   }
