@@ -1,9 +1,11 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Upload, Icon } from 'antd'
+import { Button, Row, Col, Upload, Icon, Modal, Input, Select } from 'antd'
 import 'codemirror/mode/javascript/javascript.js'; 
 import 'codemirror/addon/hint/show-hint.js'; 
 import 'codemirror/addon/hint/javascript-hint.js'; 
 import { Controlled as CodeMirror } from 'react-codemirror2';
+
+const Option = Select.Option
 //TODO 1. code敏感字符过滤 2. 弹窗添加cdn 3. 本地文件?
 class Console extends Component {
   constructor(props){
@@ -11,7 +13,10 @@ class Console extends Component {
     this.state = {
       code: '//按ctrl代码提示 ',
       outputList: [], //code执行结果list
-	  fileList: [] //上传文件list
+	  fileList: [], //上传文件list
+	  modalVisible: false,
+	  cdnValue: '',
+	  cdnPrefix: 'http://'
     }
     //this.instance = null
   }
@@ -27,13 +32,29 @@ class Console extends Component {
   clearRes = () => {
     this.setState({ outputList: [] })
   }
-  addCDN = () => {
-	this.state.fileList.push({ name: '??', status: 'done' })
-	this.setState({ fileList: this.state.fileList })
-  }
+
   onFileChange = ({fileList}) => {
 	this.setState({fileList})
   }
+  //Modal method
+  changeModalVisiable = (bool, e) => {
+	this.setState({
+      modalVisible: bool,
+    });
+  }
+  onSubmitCDN = () => {
+	console.log(this.state.cdnPrefix)
+	this.state.fileList.push({ 
+	  name: this.state.cdnValue,
+	  status: 'done',
+	  url: this.state.cdnPrefix + this.state.cdnValue
+	})
+	this.setState({
+	  modalVisible: false,
+	  fileList: this.state.fileList
+	})
+  }
+  
   render(){
     const options = {
       lineNumbers: false,//为true时样式错误?
@@ -67,12 +88,12 @@ class Console extends Component {
           <Button type="primary" onClick={this.run}>运行</Button>
           <Button onClick={this.clearCode}>清空代码</Button>     
           <Button onClick={this.clearRes}>清空结果</Button>
-          <Button type="dashed" onClick={this.addCDN}>
-            <Icon type="plus-circle" />CDN
+          <Button type="dashed" onClick={() => this.setState({modalVisible: true})}>
+            + CDN
           </Button>
           <Upload {...uploadprops} fileList={this.state.fileList} onChange={this.onFileChange}>
             <Button type="dashed">
-              <Icon type="plus-circle" />本地库
+              + 本地库
             </Button>
           </Upload>
         </div>
@@ -98,11 +119,20 @@ class Console extends Component {
         </Row>
 		<Modal
           title="输入要添加的CDN地址"
-          visible={this.state.visible}
-          onOk={this.handleOk}
-          onCancel={this.handleCancel}
+          visible={this.state.modalVisible}
+          onOk={this.onSubmitCDN}
+          onCancel={e => this.changeModalVisiable(false, e)}
         >
-          <p>Some contents...</p>
+		  <Input 
+			addonBefore={
+			  <Select defaultValue="http://" style={{ width: 90 }} value={this.state.cdnPrefix} onChange={e => this.setState({cdnPrefix: e.target.value})}>
+				<Option value="http://">http://</Option>
+				<Option value="https://">https://</Option>
+			  </Select>
+			}
+			value = {this.state.cdnValue}
+			onChange = {e => this.setState({cdnValue: e.target.value})}
+		  />
         </Modal>
       </div>
     )
