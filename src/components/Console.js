@@ -9,7 +9,7 @@ import { loadScript } from '../utils/utils.js'
 
 const Option = Select.Option
 
-//TODO 1. code敏感字符过滤?  3. 本地文件? 4. 错误捕获(cdn地址404)
+//TODO 1. code敏感字符过滤?  3. 本地文件? 
 class Console extends Component {
   constructor(props) {
     super(props)
@@ -33,6 +33,13 @@ class Console extends Component {
   run = () => {
 		try {
 			var res = eval(this.state.code)
+			if(res === undefined) {
+				res ='undefind'
+			} else if(res === null) {
+				res = 'null'
+			} else if (res == ''){
+				res = '\"\"'
+			}
 			this.state.outputList.push(res)
 			this.setState({ outputList: this.state.outputList })			
 		} catch(err) {
@@ -46,7 +53,6 @@ class Console extends Component {
 				message.error(err)
 			}
 		}
-
   }
   clearCode = () => {
     this.setState({ code: '' })
