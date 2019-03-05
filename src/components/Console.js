@@ -1,26 +1,35 @@
 import React, { Component } from 'react';
-import { Button, Row, Col, Upload, Icon, Modal, Input, Select } from 'antd'
-import 'codemirror/mode/javascript/javascript.js'; 
-import 'codemirror/addon/hint/show-hint.js'; 
-import 'codemirror/addon/hint/javascript-hint.js'; 
+import { Button, Row, Col, Upload, Modal, Input, Select, message } from 'antd'
+import 'codemirror/mode/javascript/javascript.js';
+import 'codemirror/addon/hint/show-hint.js';
+import 'codemirror/addon/hint/javascript-hint.js';
 import { Controlled as CodeMirror } from 'react-codemirror2';
+import uuidv1 from 'uuid/v1'
+import { loadScript } from '../utils/utils.js'
 
 const Option = Select.Option
-//TODO 1. code敏感字符过滤 2. 弹窗添加cdn 3. 本地文件?
+
+//TODO 1. code敏感字符过滤?  3. 本地文件? 4. 错误捕获(cdn地址404)
 class Console extends Component {
-  constructor(props){
+  constructor(props) {
     super(props)
     this.state = {
       code: '//按ctrl代码提示 ',
       outputList: [], //code执行结果list
-	  fileList: [], //上传文件list
-	  modalVisible: false,
-	  cdnValue: '',
-	  cdnPrefix: 'http://'
+      fileList: [], //上传文件list
+      modalVisible: false,
+      cdnValue: '',
+      cdnPrefix: 'http://'
     }
     //this.instance = null
   }
-  //componentDidMount = () => {}
+  componentDidMount = () => {
+		let fileList = localStorage.getItem('filelist')? JSON.parse(localStorage.getItem('filelist')): []
+    this.setState({fileList})
+		fileList.map(file => {
+			loadScript(file.url)
+		})
+  }
   run = () => {
     let res = eval(this.state.code)
     this.state.outputList.push(res)
@@ -33,29 +42,43 @@ class Console extends Component {
     this.setState({ outputList: [] })
   }
 
-  onFileChange = ({fileList}) => {
-	this.setState({fileList})
+  onFileChange = ({ fileList }) => {
+    this.setState({ fileList })
   }
+	onFileRemove = (file) => {
+		let fileList = this.state.fileList.filter(e => file.uid != e.uid)
+		localStorage.setItem('filelist', JSON.parse(fileList))
+	}
+
   //Modal method
   changeModalVisiable = (bool, e) => {
-	this.setState({
+    this.setState({
       modalVisible: bool,
     });
   }
   onSubmitCDN = () => {
-	console.log(this.state.cdnPrefix)
-	this.state.fileList.push({ 
-	  name: this.state.cdnValue,
-	  status: 'done',
-	  url: this.state.cdnPrefix + this.state.cdnValue
-	})
-	this.setState({
-	  modalVisible: false,
-	  fileList: this.state.fileList
-	})
+    let url = this.state.cdnPrefix + this.state.cdnValue
+    if(this.state.fileList.some(e => url == e.url)){ //重复性检验
+      message.info('CDN已存在 不能重复添加')
+      return
+    }
+		loadScript(url, () => {
+			this.state.fileList.push({
+				uid: uuidv1(),
+				name: this.state.cdnValue,
+				status: 'done',
+				url: url
+			})
+			this.setState({
+				modalVisible: false,
+				fileList: this.state.fileList
+			})
+			//存入localStorage
+			localStorage.setItem('filelist', JSON.stringify(this.state.fileList))			
+		})
   }
-  
-  render(){
+
+  render() {
     const options = {
       lineNumbers: false,//为true时样式错误?
       mode: 'javascript',
@@ -63,7 +86,7 @@ class Console extends Component {
       lineWrapping: true, //自动换行
       readOnly: false, //可编辑模式
       autofocus: true, //自动获得焦点
-      extraKeys: {'Ctrl': 'autocomplete'} //按 ctrl 出现代码提示或补全代码
+      extraKeys: { 'Ctrl': 'autocomplete' } //按 ctrl 出现代码提示或补全代码
     }
     const style = {
       section: {
@@ -78,7 +101,7 @@ class Console extends Component {
     }
     const uploadprops = {
       // action: '//jsonplaceholder.typicode.com/posts/',
-      customRequest({ file, onSuccess }){
+      customRequest({ file, onSuccess }) {
         setTimeout(() => { onSuccess('ok') }, 0)
       },
     }
@@ -86,12 +109,16 @@ class Console extends Component {
       <div>
         <div className="button-row">
           <Button type="primary" onClick={this.run}>运行</Button>
-          <Button onClick={this.clearCode}>清空代码</Button>     
+          <Button onClick={this.clearCode}>清空代码</Button>
           <Button onClick={this.clearRes}>清空结果</Button>
-          <Button type="dashed" onClick={() => this.setState({modalVisible: true})}>
+          <Button type="dashed" onClick={() => this.setState({ modalVisible: true })}>
             + CDN
           </Button>
-          <Upload {...uploadprops} fileList={this.state.fileList} onChange={this.onFileChange}>
+          <Upload {...uploadprops} 
+					  fileList={this.state.fileList} 
+						onChange={this.onFileChange}
+						onRemove={this.onFileRemove}
+					>
             <Button type="dashed">
               + 本地库
             </Button>
@@ -99,15 +126,15 @@ class Console extends Component {
         </div>
         <Row>
           <Col span={12}>
-            <CodeMirror 
-              value={ this.state.code }
-              options={ options } 
+            <CodeMirror
+              value={this.state.code}
+              options={options}
               // onChange={(editor, data, value) => { }} 
               // editorDidMount={editor => { this.instance = editor }} //获取codemirror实例
               onBeforeChange={(editor, data, value) => {
-                this.setState({code: value});
+                this.setState({ code: value });
               }}
-            />             
+            />
           </Col>
           <Col span={12}>
             <div className="output" style={style.output}>
@@ -117,22 +144,22 @@ class Console extends Component {
             </div>
           </Col>
         </Row>
-		<Modal
+        <Modal
           title="输入要添加的CDN地址"
           visible={this.state.modalVisible}
           onOk={this.onSubmitCDN}
           onCancel={e => this.changeModalVisiable(false, e)}
         >
-		  <Input 
-			addonBefore={
-			  <Select defaultValue="http://" style={{ width: 90 }} value={this.state.cdnPrefix} onChange={e => this.setState({cdnPrefix: e.target.value})}>
-				<Option value="http://">http://</Option>
-				<Option value="https://">https://</Option>
-			  </Select>
-			}
-			value = {this.state.cdnValue}
-			onChange = {e => this.setState({cdnValue: e.target.value})}
-		  />
+          <Input
+            addonBefore={
+              <Select defaultValue="http://" style={{ width: 90 }} value={this.state.cdnPrefix} onChange={e => this.setState({ cdnPrefix: e.target.value })}>
+                <Option value="http://">http://</Option>
+                <Option value="https://">https://</Option>
+              </Select>
+            }
+            value={this.state.cdnValue}
+            onChange={e => this.setState({ cdnValue: e.target.value })}
+          />
         </Modal>
       </div>
     )
