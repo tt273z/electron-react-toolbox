@@ -31,9 +31,22 @@ class Console extends Component {
 		})
   }
   run = () => {
-    let res = eval(this.state.code)
-    this.state.outputList.push(res)
-    this.setState({ outputList: this.state.outputList })
+		try {
+			var res = eval(this.state.code)
+			this.state.outputList.push(res)
+			this.setState({ outputList: this.state.outputList })			
+		} catch(err) {
+			if(err instanceof SyntaxError){
+				message.error(`语法错误: ${err.message}`)
+			} else if(err instanceof TypeError){
+				message.error(`类型错误: ${err.message}`)
+			} else if(err instanceof ReferenceError){
+				message.error(`引用错误: ${err.message}`)
+			} else {
+				message.error(err)
+			}
+		}
+
   }
   clearCode = () => {
     this.setState({ code: '' })
