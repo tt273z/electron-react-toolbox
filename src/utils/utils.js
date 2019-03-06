@@ -13,3 +13,6 @@ export const loadScript = (url, cb) => {
 	}
 	head.appendChild(script)	
 }
+export const isString = (str) => {
+	return typeof str == 'string'? true: false
+}
