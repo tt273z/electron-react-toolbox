@@ -30,13 +30,13 @@ export const type = obj => {
     types[Object.prototype.toString.call(obj)] || "object"
 }
 export const codeOutputHandler = obj => {
-	let s = type(res)
+	let s = type(obj)
 	if(s=='string') {
 		return `"${obj}"`
 	} else if(s=='null'||s=='undefined'||s=='boolean'||s=='regexp'||s=='function'){
 		return String(obj)
 	} else if(s=='array'||s=='object') {
-		return JSON.stringify(s)
+		return JSON.stringify(obj)
 	} else {
 		return 'donot know what it is'
 	}

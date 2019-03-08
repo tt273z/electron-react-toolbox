@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon, } from 'antd';
 import logo from '../logo.svg';
 import RouteConfig from '../router'
-import { HashRouter } from 'react-router-dom';
+import { HashRouter, Link } from 'react-router-dom';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
@@ -39,13 +39,11 @@ class Main extends Component {
               defaultOpenKeys={['sub1']}
               style={{ height: '100%', borderRight: 0 }}
             >
-              <SubMenu key="sub1" title={<span><Icon type="user" />开发工具</span>}>
-                <Menu.Item key="1">Console.log</Menu.Item>
-                <Menu.Item key="2">Console.time</Menu.Item>
-                <Menu.Item key="3">option3</Menu.Item>
-                <Menu.Item key="4">option4</Menu.Item>
+              <SubMenu key="sub1" title={<span><Icon type="tool" />开发工具</span>}>
+                <Menu.Item key="1"><Link>代码编辑器</Link></Menu.Item>
+                <Menu.Item key="2"><Link>密码正则生成</Link></Menu.Item>
               </SubMenu>
-              <SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
+              <SubMenu key="sub2" title={<span><Icon type="rocket" />CSS工具</span>}>
                 <Menu.Item key="5">option5</Menu.Item>
                 <Menu.Item key="6">option6</Menu.Item>
                 <Menu.Item key="7">option7</Menu.Item>

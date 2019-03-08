@@ -5,11 +5,11 @@ import 'codemirror/addon/hint/show-hint.js';
 import 'codemirror/addon/hint/javascript-hint.js';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import uuidv1 from 'uuid/v1'
-import { loadScript } from '../utils/utils.js'
+import { loadScript, codeOutputHandler } from '../utils/utils.js'
 
 const Option = Select.Option
 
-//TODO 1. code敏感字符过滤?  3. 本地文件? 
+//TODO 本地文件/
 class Console extends Component {
   constructor(props) {
     super(props)
@@ -33,14 +33,7 @@ class Console extends Component {
   run = () => {
 		try {
 			var res = eval(this.state.code)
-			if(res === undefined) {
-				res ='undefind'
-			} else if(res === null) {
-				res = 'null'
-			} else if (res == ''){
-				res = '\"\"'
-			}
-			this.state.outputList.push(res)
+			this.state.outputList.push(codeOutputHandler(res))
 			this.setState({ outputList: this.state.outputList })			
 		} catch(err) {
 			if(err instanceof SyntaxError){

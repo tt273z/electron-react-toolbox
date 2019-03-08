@@ -16,12 +16,13 @@
     transform: rotate(360deg);
   }
 }
-/* console page */
-.button-row button {
-  margin-right: 16px;
-}
+
+
 .button-row {
   margin-bottom: 16px;
+	.button-row button {
+		margin-right: 16px;
+	}	
 }
 
 .output p {
