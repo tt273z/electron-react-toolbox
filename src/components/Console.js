@@ -9,7 +9,7 @@ import { loadScript, codeOutputHandler } from '../utils/utils.js'
 
 const Option = Select.Option
 
-//TODO 本地文件/
+//TODO 本地文件/快捷键
 class Console extends Component {
   constructor(props) {
     super(props)

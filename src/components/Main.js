@@ -6,6 +6,34 @@ import { HashRouter, Link } from 'react-router-dom';
 
 const { SubMenu } = Menu;
 const { Header, Content, Sider } = Layout;
+const menuList = [{
+	key: 'sub1',
+	isSub: true,
+	icon: 'tool',
+	title: '开发工具',
+	children: [
+		{ key: '1', route: '/', title: '代码编辑器' },
+		{ key: '2', route: '/regexp', title: '密码正则工具' },
+	]
+}, {
+	key: 'sub2',
+	isSub: true,
+	icon: 'rocket',
+	title: 'CSS工具',
+	children: [
+		{ key: '3', route: '/regexp', title: '三角形生成器' },
+	]
+}]
+
+const renderMenuItem = e => (<Menu.Item key={e.key}><Link to={e.route}>{e.title}</Link></Menu.Item>)
+const renderSubMenuItem = e => (
+	<SubMenu key={e.key} 
+		title={<span>
+			{e.icon && <Icon type={e.icon}/>}
+			{e.title}</span>}>
+		{e.children.map(e => renderMenuItem(e))}
+	</SubMenu>
+)
 
 class Main extends Component {
   render(){
@@ -39,16 +67,7 @@ class Main extends Component {
               defaultOpenKeys={['sub1']}
               style={{ height: '100%', borderRight: 0 }}
             >
-              <SubMenu key="sub1" title={<span><Icon type="tool" />开发工具</span>}>
-                <Menu.Item key="1"><Link>代码编辑器</Link></Menu.Item>
-                <Menu.Item key="2"><Link>密码正则生成</Link></Menu.Item>
-              </SubMenu>
-              <SubMenu key="sub2" title={<span><Icon type="rocket" />CSS工具</span>}>
-                <Menu.Item key="5">option5</Menu.Item>
-                <Menu.Item key="6">option6</Menu.Item>
-                <Menu.Item key="7">option7</Menu.Item>
-                <Menu.Item key="8">option8</Menu.Item>
-              </SubMenu>
+							{ menuList.map(e => e.isSub? renderSubMenuItem(e): renderMenuItem(e)) }
             </Menu>
           </Sider>
           <Layout style={{ padding: '0 24px 24px' }}>
