@@ -5,11 +5,11 @@ import 'codemirror/addon/hint/show-hint.js';
 import 'codemirror/addon/hint/javascript-hint.js';
 import { Controlled as CodeMirror } from 'react-codemirror2';
 import uuidv1 from 'uuid/v1'
-import { loadScript, codeOutputHandler } from '../utils/utils.js'
+import { loadScript, codeOutputHandler, removeElement } from '../utils/utils.js'
 
 const Option = Select.Option
 
-//TODO 本地文件/快捷键
+//TODO 快捷键
 class Console extends Component {
   constructor(props) {
     super(props)
@@ -27,7 +27,7 @@ class Console extends Component {
 		let fileList = localStorage.getItem('filelist')? JSON.parse(localStorage.getItem('filelist')): []
     this.setState({fileList})
 		fileList.map(file => {
-			loadScript(file.url)
+			loadScript(file.url, file.uid)
 		})
   }
   run = () => {
@@ -47,19 +47,21 @@ class Console extends Component {
 			}
 		}
   }
-  clearCode = () => {
-    this.setState({ code: '' })
-  }
-  clearRes = () => {
-    this.setState({ outputList: [] })
-  }
 
-  onFileChange = ({ fileList }) => {
-    this.setState({ fileList })
+  onFileChange = ({ file, fileList }) => {
+		if(file.status == 'done'){
+			let r = new FileReader()
+			r.readAsDataURL(file.originFileObj, 'UTF-8')
+			r.onload = () => {
+				loadScript(r.result, file.uid)
+			}
+		}
+		this.setState({ fileList })			
   }
 	onFileRemove = (file) => {
+		removeElement(file.uid)
 		let fileList = this.state.fileList.filter(e => file.uid != e.uid)
-		localStorage.setItem('filelist', JSON.parse(fileList))
+		localStorage.setItem('filelist', JSON.stringify(fileList))
 	}
 
   //Modal method
@@ -70,13 +72,14 @@ class Console extends Component {
   }
   onSubmitCDN = () => {
     let url = this.state.cdnPrefix + this.state.cdnValue
+		let id = uuidv1()
     if(this.state.fileList.some(e => url == e.url)){ //重复性检验
       message.info('CDN已存在 不能重复添加')
       return
     }
-		loadScript(url, () => {
+		loadScript(url, id, () => {
 			this.state.fileList.push({
-				uid: uuidv1(),
+				uid: id,
 				name: this.state.cdnValue,
 				status: 'done',
 				url: url
@@ -113,6 +116,7 @@ class Console extends Component {
     }
     const uploadprops = {
       // action: '//jsonplaceholder.typicode.com/posts/',
+			accept: '.js',
       customRequest({ file, onSuccess }) {
         setTimeout(() => { onSuccess('ok') }, 0)
       },
@@ -121,8 +125,8 @@ class Console extends Component {
       <div>
         <div className="button-row">
           <Button type="primary" onClick={this.run}>运行</Button>
-          <Button onClick={this.clearCode}>清空代码</Button>
-          <Button onClick={this.clearRes}>清空结果</Button>
+          <Button onClick={() => this.setState({ code: '' })}>清空代码</Button>
+          <Button onClick={() => this.setState({ outputList: [] })}>清空结果</Button>
           <Button type="dashed" onClick={() => this.setState({ modalVisible: true })}>
             + CDN
           </Button>

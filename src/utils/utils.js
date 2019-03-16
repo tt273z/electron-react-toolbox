@@ -11,10 +11,11 @@ const types = {
    "[object String]": "string",
 }
 
-export const loadScript = (url, cb) => {
+export const loadScript = (url, id, cb) => {
 	let script = document.createElement('script')
 	let head = document.getElementsByTagName('head')[0]
 	script.src = url
+	script.id = id
 	script.onload = script.onreadystatechange = function() {
 		if (!this.readyState || this.readyState == 'loaded' || this.readyState == 'complete') {
 			cb && cb()
@@ -24,6 +25,11 @@ export const loadScript = (url, cb) => {
 		message.error('当前的URL地址无效 请重新输入')
 	}
 	head.appendChild(script)	
+}
+export const removeElement = id => {
+	let e = document.getElementById(id)
+	let rm = e.parentNode.removeChild(e)
+	rm = null
 }
 export const type = obj => {
 	return obj == null ? String(obj) :
@@ -37,6 +43,8 @@ export const codeOutputHandler = obj => {
 		return String(obj)
 	} else if(s=='array'||s=='object') {
 		return JSON.stringify(obj)
+	} else if (s=='number') {
+		return obj
 	} else {
 		return 'donot know what it is'
 	}
