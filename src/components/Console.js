@@ -110,7 +110,7 @@ class Console extends Component {
       },
       output: {
         width: '100%',
-        height: 300,
+        height: '40vh',
         background: '#eee'
       }
     }
@@ -122,7 +122,7 @@ class Console extends Component {
       },
     }
     return (
-      <div>
+      <div className="console">
         <div className="button-row">
           <Button type="primary" onClick={this.run}>运行</Button>
           <Button onClick={() => this.setState({ code: '' })}>清空代码</Button>

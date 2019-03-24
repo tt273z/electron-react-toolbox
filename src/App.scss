@@ -1,6 +1,9 @@
 .margin-right {
   margin-right: 16px;
 }
+.margin-bottom {
+  margin-bottom: 16px;
+}
 .App-logo {
   animation: App-logo-spin infinite 20s linear;
   height: 50px;
@@ -17,36 +20,57 @@
   }
 }
 
+.console {
+  .button-row {
+    margin-bottom: 16px;
+    button {
+      margin-right: 16px;
+    }	
+  }
 
-.button-row {
-  margin-bottom: 16px;
-	button {
-		margin-right: 16px;
-	}	
+  .output p {
+    position: relative;
+    text-indent: 15px;
+    font-size: 12px;
+    letter-spacing: 1px;
+  }
+
+  .output p::before {
+    position: absolute;
+    display: block;
+    content: '';
+    top: 5px;
+    left: 2px;
+    width: 0;
+    height: 0;
+    border-style: solid;
+    border-width: 4px 0 4px 5px;
+    border-color: transparent transparent transparent #9E9E9E;  
+  }
+  .CodeMirror-code {
+    font-family: consolas;
+  }
+  .ant-upload-list {
+    width: 300px;
+  }
+
+  .CodeMirror {
+    height: 40vh;
+  }  
 }
 
-.output p {
-  position: relative;
-  text-indent: 15px;
-  font-size: 12px;
-  letter-spacing: 1px;
+.regexp {
+  .regexp-box {
+    width: 100%;
+    font-size: 40px;
+    line-height: 5;
+    background: #eee;
+    border-radius: 5px;
+    text-align: center;
+    cursor: pointer;
+  }
+  .ant-form-item-label > label {
+    font-size: 16px;
+  }
 }
 
-.output p::before {
-  position: absolute;
-  display: block;
-  content: '';
-  top: 5px;
-  left: 2px;
-  width: 0;
-  height: 0;
-  border-style: solid;
-  border-width: 4px 0 4px 5px;
-  border-color: transparent transparent transparent #9E9E9E;  
-}
-.CodeMirror-code {
-  font-family: consolas;
-}
-.ant-upload-list {
-  width: 300px;
-}
