@@ -10,7 +10,7 @@ import { loadScript, codeOutputHandler, removeElement } from '../utils/utils.js'
 const Option = Select.Option
 
 //TODO 快捷键
-class Console extends Component {
+export default class Console extends Component {
   constructor(props) {
     super(props)
     this.state = {
@@ -181,5 +181,3 @@ class Console extends Component {
     )
   }
 }
-
-export default Console

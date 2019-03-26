@@ -21,7 +21,7 @@ const menuList = [{
 	icon: 'rocket',
 	title: 'CSS工具',
 	children: [
-		{ key: '3', route: '/regexp', title: '三角形生成器' },
+		{ key: '3', route: '/tri', title: '三角形生成器' },
 	]
 }]
 
