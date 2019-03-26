@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Form, InputNumber, Checkbox, Radio, Input, Icon } from 'antd'
+import { Form, InputNumber, Checkbox, Radio, Input, Icon, message } from 'antd'
 
 const MAP = ['0-9', 'A-Z', 'a-z', '#?!@$%^&*-,_=+']
 
-//TODO 1一键复制2至少三种字符的情况
+//TODO 至少三种字符的情况/重置按钮
 export default class Regexper extends Component {
 	constructor(props){
 		super(props)
@@ -17,16 +17,30 @@ export default class Regexper extends Component {
 		}
 	}
 	onSubmit = () => {
+		if(!this.state.minLength&&!this.state.maxLength&&!this.state.include.length) {
+			message.info('请选择条件后生成表达式')
+			return
+		}
 		let min = this.state.minLength==null?'': this.state.minLength, 
 			max = this.state.maxLength==null?'': this.state.maxLength
-		let lenLimit = (!min && !max)? '': `{${min},${max}}`
+		let lenLimit = (!min && !max)? '*': `{${min},${max}}`
 		let includeStr = ''
 		this.state.include.map(e => includeStr+=MAP[e])
 		let atLeastStr = ''
 		if(this.state.atLeast == '0') {
 			this.state.include.map(e => atLeastStr+=`(?!^[${MAP[e]}]${lenLimit}$)`)
 		}
-		this.setState({ regexp: `/${atLeastStr}^[${includeStr}]${lenLimit}$/` })
+		this.setState({ regexp: `${atLeastStr}^[${includeStr}]${lenLimit}$` })
+		let input = document.createElement('input');
+		document.body.appendChild(input);
+		input.setAttribute('value', `/${atLeastStr}^[${includeStr}]${lenLimit}$/`);
+		input.select();
+		if (document.execCommand('copy')) {
+			document.execCommand('copy');
+			message.success('已复制到剪贴板 =)')
+		}
+		document.body.removeChild(input);
+		input = null;
 	}
 
 	onTest = val => {
@@ -70,7 +84,7 @@ export default class Regexper extends Component {
 						<Radio.Group options={atLeastOptions} onChange={e => this.setState({atLeast: e.target.value})}/>
 					</Form.Item>
 				</Form>
-				<div className="regexp-box margin-bottom" onClick={this.onSubmit}>{this.state.regexp}</div>
+				<div className="regexp-box margin-bottom" onClick={this.onSubmit}>/{this.state.regexp}/</div>
 				<Input.Search
 					style={{width: 400}}
 					placeholder="Regexp Test"
