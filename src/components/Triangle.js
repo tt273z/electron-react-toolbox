@@ -5,11 +5,23 @@ export default class Triangle extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      type: '0'
+      type: 0,
+      bWidth: '',
+      bColor: '',
+      width: 100,
+      height: 100,
     }
   }
   returnIconStyle = (color) => {
     return { fontSize: 40, cursor: 'pointer', color }
+  }
+  onCreateTri = () => {
+    this.state.bWidth = `0 ${this.state.width/2}px ${this.state.width*3/Math.sqrt(3)}px ${this.state.width/2}px`
+    this.state.bColor = `transparent transparent #000 transparent`
+    this.setState({
+      bWidth: `0 ${this.state.width/2}px ${this.state.width*1.5/Math.sqrt(3)}px ${this.state.width/2}px`,
+      bColor: `transparent transparent #000 transparent`
+    })
   }
   onTypeChange = () => {
 
@@ -24,7 +36,7 @@ export default class Triangle extends Component {
             <section>
               <p className="subtitle">方向</p>
               <div className="direct-box">
-                <Icon type="caret-up" className="i-top-left" style={this.returnIconStyle('#f11e27')} rotate="-45"/>
+                <Icon type="caret-up" className="i-top-left" style={this.returnIconStyle('#f11e27')} rotate="-45" onClick={this.onCreateTri}/>
                 <Icon type="caret-up" className="i-top" style={this.returnIconStyle('#592f95')}/>
                 <Icon type="caret-up" className="i-top-right" style={this.returnIconStyle('#0465b2')} rotate="45"/>
                 <br/>
@@ -45,16 +57,18 @@ export default class Triangle extends Component {
             </section>
             <section>
               <p className="subtitle">大小</p>
-              <p>
+              <div>
                 <label>宽度 </label>
-                <InputNumber className="margin-right" min={1} max={300} defaultValue={100} onChange={this.onWidthChange} />
+                <InputNumber className="margin-right" min={1} max={300} onChange={this.onWidthChange}  value={this.state.width}/>
                 <label>高度 </label>
-                <InputNumber min={1} max={300} defaultValue={100} onChange={this.onHeightChange} />
-              </p>
+                <InputNumber min={1} max={300} onChange={this.onHeightChange} value={this.state.height}/>
+              </div>
             </section>
           </Col>
           <Col span={16}>
-            <div className="tri-box"></div>
+            <div className="tri-box">
+              <div className="tri" style={{borderWidth: this.state.bWidth, borderColor: this.state.bColor}}></div>
+            </div>
           </Col>
         </Row>
         <section>
