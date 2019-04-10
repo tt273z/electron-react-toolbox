@@ -33,16 +33,35 @@ export default class Triangle extends Component {
       case 'top':
         bWidth = `0 ${halfWidth}px ${calculateVerticalLine(width, halfWidth)}px`
         bColor = `transparent transparent ${color}`
-        break;
+        break
       case 'bottom':
         bWidth = `${calculateVerticalLine(width, halfWidth)}px ${halfWidth}px 0`
         bColor = `${color} transparent transparent`
+        break;
       case 'left':
         bWidth = `${halfWidth}px ${calculateVerticalLine(width, halfWidth)}px ${halfWidth}px 0`
         bColor = `transparent ${color} transparent transparent`
+        break
       case 'right':
         bWidth = `${halfWidth}px 0 ${halfWidth}px ${calculateVerticalLine(width, halfWidth)}px`
         bColor = `transparent transparent transparent ${color}`
+        break
+      case 'top-left'://不能等边
+        bWidth = `${width}px ${width}px 0 0 `
+        bColor = `${color} transparent transparent`
+        break
+      case 'top-right':
+        bWidth = `${width}px 0 0 ${width}px`
+        bColor = `${color} transparent transparent`
+        break
+      case 'bottom-left':
+        bWidth = `0 ${width}px ${width}px 0`
+        bColor = `transparent transparent ${color}`
+        break
+      case 'bottom-right':
+        bWidth = `0 0 ${width}px ${width}px`
+        bColor = `transparent transparent ${color}`
+        break
       default:
         break;
     }
