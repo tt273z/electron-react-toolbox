@@ -9,13 +9,14 @@ export default class Triangle extends Component {
   constructor(props) {
     super(props)
     this.state = {
-      type: 0,
+      type: 0,//等边0等腰1任意2
       bWidth: '0 50px 86.6px',
       bColor: 'transparent transparent #592f95',
-      width: 100,
-      height: 100,
+      width: 100,//三角形宽
+      height: 100,//三角形高
       color: '#592f95',
-      direct: 'top'
+      direct: 'top',//三角形方向
+      isRightAngle: false
     }
   }
   componentDidUpdate(){
@@ -28,25 +29,34 @@ export default class Triangle extends Component {
     this.setState({ color, direct }, ()=> this.onCreateTri())
   }
   onCreateTri = () => {
-    let bWidth, bColor, halfWidth = this.state.width / 2, width = this.state.width, color = this.state.color
+    let bWidth, bColor, halfWidth = this.state.width / 2, width = this.state.width, height = this.state.height, color = this.state.color, type = this.state.type
+    let verticalLine = type==0? calculateVerticalLine(width, halfWidth): height
+    // this.state.direct.indexOf('-') != -1? this.setState({ isRightAngle: true, type: 1 })
+    //   : this.setState({ isRightAngle: false, type: 0 })
+    if(this.state.direct.indexOf('-') != -1) {//直角
+      this.setState({ isRightAngle: true, type: 1 })
+    } else {
+      this.setState({ isRightAngle: false })
+      if(!type) this.setState({ height: verticalLine })
+    }
     switch (this.state.direct) {
       case 'top':
-        bWidth = `0 ${halfWidth}px ${calculateVerticalLine(width, halfWidth)}px`
+        bWidth = `0 ${halfWidth}px ${verticalLine}px`
         bColor = `transparent transparent ${color}`
         break
       case 'bottom':
-        bWidth = `${calculateVerticalLine(width, halfWidth)}px ${halfWidth}px 0`
+        bWidth = `${verticalLine}px ${halfWidth}px 0`
         bColor = `${color} transparent transparent`
         break;
       case 'left':
-        bWidth = `${halfWidth}px ${calculateVerticalLine(width, halfWidth)}px ${halfWidth}px 0`
+        bWidth = `${halfWidth}px ${verticalLine}px ${halfWidth}px 0`
         bColor = `transparent ${color} transparent transparent`
         break
       case 'right':
-        bWidth = `${halfWidth}px 0 ${halfWidth}px ${calculateVerticalLine(width, halfWidth)}px`
+        bWidth = `${halfWidth}px 0 ${halfWidth}px ${verticalLine}px`
         bColor = `transparent transparent transparent ${color}`
         break
-      case 'top-left'://不能等边
+      case 'top-left'://直角 不等边
         bWidth = `${width}px ${width}px 0 0 `
         bColor = `${color} transparent transparent`
         break
@@ -63,23 +73,21 @@ export default class Triangle extends Component {
         bColor = `transparent transparent ${color}`
         break
       default:
-        break;
+        break
     }
     this.setState({bWidth, bColor})
   }
   onWidthChange = width => {
-    this.setState({ width })
-    this.onCreateTri()
+    this.setState({ width }, () => this.onCreateTri())
   }
   onHeightChange = height => {
-    this.setState({ height })
-    this.onCreateTri()
+    this.setState({ height }, () => this.onCreateTri())
   }
   render() {
     return (
       <div className="triangle">
-        <Row type="flex" justify="space-between" align="middle">
-          <Col span={8}>
+        <Row type="flex" justify="space-between" align="middle" style={{ maxWidth: 750, margin: '0 auto' }}>
+          <Col span={12}>
             <section>
               <p className="subtitle">方向</p>
               <div className="direct-box">
@@ -98,8 +106,9 @@ export default class Triangle extends Component {
             <section>
               <p className="subtitle">类型</p>
               <Radio.Group onChange={e => this.setState({ type: e.target.value })} value={this.state.type}>
-                <Radio value={0}>等边</Radio>
+                <Radio value={0} disabled={this.state.isRightAngle}>等边</Radio>
                 <Radio value={1}>等腰</Radio>
+                <Radio value={2}>任意</Radio>
               </Radio.Group>
             </section>
             <section>
@@ -112,16 +121,18 @@ export default class Triangle extends Component {
               </div>
             </section>
           </Col>
-          <Col span={16}>
+          <Col span={12}>
             <div className="tri-box">
               <div className="tri" style={{ borderWidth: this.state.bWidth, borderColor: this.state.bColor }}></div>
             </div>
           </Col>
+          <Col span={24}>
+            <section>
+              <p className="subtitle">CSS</p>
+              <div className="css-code">dddddddddd</div>
+            </section>          
+          </Col>
         </Row>
-        <section>
-          <p className="subtitle">CSS</p>
-          <div className="css-code">dddddddddd</div>
-        </section>
       </div>
     )
   }

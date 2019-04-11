@@ -88,6 +88,7 @@
 
 .triangle {
   .tri-box {
+    float: right;
     width: 300px;
     height: 300px;
     background: url(data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAABAAAAAQCAIAAACQkWg2AAAAGXRFWHRTb2Z0d2FyZQBBZG9iZSBJbWFnZVJlYWR5ccllPAAAAC1JREFUeNpiPHPmDAM2YGxsjFWciYFEMKqBGMD4//9/rBJnz54dDSX6aQAIMABCtQiAsDRF+wAAAABJRU5ErkJggg==);
@@ -110,7 +111,7 @@
       color: #333;
     } 
     .css-code {
-      max-width: 300px;
+      width: 100%;
       background-color: #282c34;
       border-radius: 5px;
       color: #ccc;
