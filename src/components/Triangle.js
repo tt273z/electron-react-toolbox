@@ -34,7 +34,7 @@ export default class Triangle extends Component {
     // this.state.direct.indexOf('-') != -1? this.setState({ isRightAngle: true, type: 1 })
     //   : this.setState({ isRightAngle: false, type: 0 })
     if(this.state.direct.indexOf('-') != -1) {//直角
-      this.setState({ isRightAngle: true, type: 1 })
+      this.setState({ isRightAngle: true, type: 1, width, height: width })
     } else {
       this.setState({ isRightAngle: false })
       if(!type) this.setState({ height: verticalLine })
@@ -83,6 +83,9 @@ export default class Triangle extends Component {
   onHeightChange = height => {
     this.setState({ height }, () => this.onCreateTri())
   }
+  onTypeChange = e => {
+    this.setState({ type: e.target.value })
+  } 
   render() {
     return (
       <div className="triangle">
@@ -105,7 +108,7 @@ export default class Triangle extends Component {
             </section>
             <section>
               <p className="subtitle">类型</p>
-              <Radio.Group onChange={e => this.setState({ type: e.target.value })} value={this.state.type}>
+              <Radio.Group onChange={this.typeChange} value={this.state.type}>
                 <Radio value={0} disabled={this.state.isRightAngle}>等边</Radio>
                 <Radio value={1}>等腰</Radio>
                 <Radio value={2}>任意</Radio>
@@ -129,7 +132,15 @@ export default class Triangle extends Component {
           <Col span={24}>
             <section>
               <p className="subtitle">CSS</p>
-              <div className="css-code">dddddddddd</div>
+              <div className="css-code">
+                .tri {'{'}<br/>
+                  &nbsp;&nbsp;width: 0;<br/>
+                  &nbsp;&nbsp;height: 0;<br/>
+                  &nbsp;&nbsp;border-style: solid;<br/>
+                  &nbsp;&nbsp;border-width: { this.state.bWidth };<br/>
+                  &nbsp;&nbsp;border-color: { this.state.bColor };<br/>
+                {'}'}
+              </div>
             </section>          
           </Col>
         </Row>
