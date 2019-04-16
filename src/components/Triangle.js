@@ -34,7 +34,8 @@ export default class Triangle extends Component {
     // this.state.direct.indexOf('-') != -1? this.setState({ isRightAngle: true, type: 1 })
     //   : this.setState({ isRightAngle: false, type: 0 })
     if(this.state.direct.indexOf('-') != -1) {//直角
-      this.setState({ isRightAngle: true, type: 1, width, height: width })
+      if(this.state.type == 0) this.setState({ type: 1 })
+      this.setState({ isRightAngle: true, width, height })
     } else {
       this.setState({ isRightAngle: false })
       if(!type) this.setState({ height: verticalLine })
@@ -57,19 +58,19 @@ export default class Triangle extends Component {
         bColor = `transparent transparent transparent ${color}`
         break
       case 'top-left'://直角 不等边
-        bWidth = `${width}px ${width}px 0 0 `
+        bWidth = `${height}px ${width}px 0 0 `
         bColor = `${color} transparent transparent`
         break
       case 'top-right':
-        bWidth = `${width}px 0 0 ${width}px`
+        bWidth = `${height}px 0 0 ${width}px`
         bColor = `${color} transparent transparent`
         break
       case 'bottom-left':
-        bWidth = `0 ${width}px ${width}px 0`
+        bWidth = `0 ${width}px ${height}px 0`
         bColor = `transparent transparent ${color}`
         break
       case 'bottom-right':
-        bWidth = `0 0 ${width}px ${width}px`
+        bWidth = `0 0 ${height}px ${width}px`
         bColor = `transparent transparent ${color}`
         break
       default:
@@ -78,9 +79,15 @@ export default class Triangle extends Component {
     this.setState({bWidth, bColor})
   }
   onWidthChange = width => {
+    if(this.state.isRightAngle&&this.state.type==1) { //等腰直角使宽高保持一致
+      this.setState({ width, height: width }, () => this.onCreateTri())
+    }
     this.setState({ width }, () => this.onCreateTri())
   }
   onHeightChange = height => {
+    if(this.state.isRightAngle&&this.state.type==1) {
+      this.setState({ height, width: height }, () => this.onCreateTri())
+    }
     this.setState({ height }, () => this.onCreateTri())
   }
   onTypeChange = e => {
@@ -108,7 +115,7 @@ export default class Triangle extends Component {
             </section>
             <section>
               <p className="subtitle">类型</p>
-              <Radio.Group onChange={this.typeChange} value={this.state.type}>
+              <Radio.Group onChange={this.onTypeChange} value={this.state.type}>
                 <Radio value={0} disabled={this.state.isRightAngle}>等边</Radio>
                 <Radio value={1}>等腰</Radio>
                 <Radio value={2}>任意</Radio>
