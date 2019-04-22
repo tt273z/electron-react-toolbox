@@ -19,9 +19,8 @@ export default class Triangle extends Component {
       isRightAngle: false
     }
   }
-  componentDidUpdate(){
-    
-  }
+  componentDidUpdate(){ }
+
   returnIconStyle = (color) => {
     return { fontSize: 40, cursor: 'pointer', color }
   }

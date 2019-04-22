@@ -14,7 +14,7 @@ const menuList = [{
 	children: [
 		{ key: '1', route: '/', title: '代码编辑器' },
 		{ key: '2', route: '/regexp', title: '密码正则工具' },
-		{ key: '4', route: '/regexp', title: '模板语法转换' },
+		{ key: '4', route: '/templ', title: '模板语法转换' },
 	]
 }, {
 	key: 'sub2',
