@@ -22,7 +22,7 @@
     "test": "react-scripts test",
     "eject": "react-scripts eject",
     "electron-start": "electron .",
-	"package": "electron-packager ./ ert --win --out=release --arch=x64 --app-version=0.1.0 --electron-version=4.0.4 --overwrite --icon=./public/favicon.ico"
+	  "package": "electron-packager ./ ert --win --out=release --arch=x64 --app-version=0.1.0 --electron-version=4.0.4 --overwrite --icon=./public/favicon.ico"
   },
   "eslintConfig": {
     "extends": "react-app"

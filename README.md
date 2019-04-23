@@ -18,3 +18,42 @@
 - 简单的密码验证正则生成(ing)
     - 字符长度/种类组合
     - 在线test
+- 三角形 CSS 生成
+
+## react + electron 打包过程
+
+### 1. 安装 Electron
+`npm install electron --save`
+### 2. 配置 Electron 入口文件
+项目根目录下创建 [main.js](https://github.com/mengQ99/electron-react-toolbox/blob/master/main.js)
+### 3. 配置 package.json
+```json
+{
+  "name": "electron-react-toolbox",
+  "version": "0.1.0",
+  "private": true,
+  "main": "main.js", //指定入口文件
+  "homepage": ".", //静态文件配置为相对路径
+  "dependencies": {...},
+  "scripts": {...},
+}
+```
+### 4. 安装打包插件 electron-packager
+```
+npm install electron-packager --save-dev
+```
+### 5. 打包命令
+```
+electron-packager <location of project> <name of project> <platform> <location of output> <architecture> <app version> <electron version> <optional options>
+```
+- location of project：项目所在路径 
+- name of project：项目名称
+- platform：打包为哪个平台的应用（Windows/Mac/Linux） 
+- architecture：使用 x86 还是 x64 
+- location of output: 指定打包生成文件路径
+- app version：项目版本
+- electron version：electron 版本 
+- optional options：可选选项
+为了简便可直接配置 package.json 中的 scripts 添加，每次 `npm run package`可以直接打包：
+
+`"package": "electron-packager ./ ert --win --out=release --arch=x64 --app-version=0.1.0 --electron-version=4.0.4 --overwrite --icon=./public/favicon.ico"`
