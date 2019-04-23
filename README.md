@@ -27,7 +27,7 @@
 ### 2. 配置 Electron 入口文件
 项目根目录下创建 [main.js](https://github.com/mengQ99/electron-react-toolbox/blob/master/main.js)
 ### 3. 配置 package.json
-```json
+```
 {
   "name": "electron-react-toolbox",
   "version": "0.1.0",
@@ -56,4 +56,6 @@ electron-packager <location of project> <name of project> <platform> <location o
 - optional options：可选选项
 为了简便可直接配置 package.json 中的 scripts 添加，每次 `npm run package`可以直接打包：
 
-`"package": "electron-packager ./ ert --win --out=release --arch=x64 --app-version=0.1.0 --electron-version=4.0.4 --overwrite --icon=./public/favicon.ico"`
+```
+"package": "electron-packager ./ ert --win --out=release --arch=x64 --app-version=0.1.0 --electron-version=4.0.4 --overwrite --icon=./public/favicon.ico"
+```
