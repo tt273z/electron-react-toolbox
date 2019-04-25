@@ -31,6 +31,7 @@ export default class Console extends Component {
 		})
   }
   run = () => {
+    if(this.state.code == '') return
 		try {
 			var res = eval(this.state.code)
 			this.state.outputList.push(codeOutputHandler(res))
