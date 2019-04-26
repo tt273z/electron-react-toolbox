@@ -49,12 +49,12 @@ export const codeOutputHandler = obj => {
     return 'donot know what it is'
   }
 }
-export const Mover = (s) => {
+export const Mover = function(s) {
   this.obj = document.querySelector(s);
   this.startx = 0;
-  this.starty;
-  this.startLeft;
-  this.startTop;
+  this.starty = 0;
+  this.startLeft = 0;
+  this.startTop = 0;
   this.mainDiv = this.obj.parentNode.parentNode;
   this.isDown = false;
   this.originIndex = this.mainDiv.style.zIndex;

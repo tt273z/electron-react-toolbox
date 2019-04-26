@@ -125,12 +125,14 @@
 }
 
 .templ-syntax {
-  .templ-box {
+  .templ-box, .normal-box {
     font-family: consolas;
     background: #263238;
+    color: khaki;
     outline: none;
   }
-  .templ-box.ant-input:hover {
+  .templ-box.ant-input:hover,
+  .normal-box.ant-input:hover {
     border-color: #fff;
   }
 }
