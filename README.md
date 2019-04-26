@@ -52,7 +52,7 @@ npm install electron-packager --save-dev
 ```
 electron-packager <location of project> <name of project> <platform> <location of output> <architecture> <app version> <electron version> <optional options>
 ```
-- location of project：项目所在路径 
+- location of project：项目所在路径 (打包好的build文件夹)
 - name of project：项目名称
 - platform：打包为哪个平台的应用（Windows/Mac/Linux） 
 - architecture：使用 x86 还是 x64 
@@ -65,5 +65,5 @@ electron-packager <location of project> <name of project> <platform> <location o
 为了简便可直接配置 package.json 中的 scripts 添加，每次 `npm run package`可以直接打包：
 
 ```
-"package": "electron-packager ./ ert --win --out=release --arch=x64 --app-version=0.1.0 --electron-version=4.0.4 --overwrite --icon=./public/favicon.ico"
+"package": "electron-packager ./build ert --win --out=release --arch=x64 --app-version=0.1.0 --electron-version=4.0.4 --overwrite --icon=./public/favicon.ico"
 ```
