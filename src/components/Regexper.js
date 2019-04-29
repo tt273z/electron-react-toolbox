@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Form, InputNumber, Checkbox, Radio, Input, Icon, message } from 'antd'
+import { copy2Clipboard } from '../utils/utils.js'
 
 const MAP = ['0-9', 'A-Z', 'a-z', '#?!@$%^&*-,_=+']
 
@@ -31,16 +32,7 @@ export default class Regexper extends Component {
 			this.state.include.map(e => atLeastStr+=`(?!^[${MAP[e]}]${lenLimit}$)`)
 		}
 		this.setState({ regexp: `${atLeastStr}^[${includeStr}]${lenLimit}$` })
-		let input = document.createElement('input');
-		document.body.appendChild(input);
-		input.setAttribute('value', `/${atLeastStr}^[${includeStr}]${lenLimit}$/`);
-		input.select();
-		if (document.execCommand('copy')) {
-			document.execCommand('copy');
-			message.success('已复制到剪贴板 =)')
-		}
-		document.body.removeChild(input);
-		input = null;
+		copy2Clipboard(`/${atLeastStr}^[${includeStr}]${lenLimit}$/`)
 	}
 
 	onTest = val => {
