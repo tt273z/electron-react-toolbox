@@ -97,3 +97,15 @@ export const Mover = function(s) {
   //非ie浏览器
   document.addEventListener("mousemove", this.move, true);
 }
+export const copy2Clipboard = (text) => {
+  let input = document.createElement('input');
+  document.body.appendChild(input);
+  input.setAttribute('value', text);
+  input.select();
+  if (document.execCommand('copy')) {
+    document.execCommand('copy');
+    message.success('已复制到剪贴板 =)')
+  }
+  document.body.removeChild(input);
+  input = null;
+}
