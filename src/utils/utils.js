@@ -104,7 +104,7 @@ export const copy2Clipboard = (text) => {
   input.select();
   if (document.execCommand('copy')) {
     document.execCommand('copy');
-    message.success('已复制到剪贴板! 😎')
+    message.success('已复制到剪贴板! 😎 ')
   }
   document.body.removeChild(input);
   input = null;
