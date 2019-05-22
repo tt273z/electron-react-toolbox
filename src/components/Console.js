@@ -104,17 +104,7 @@ export default class Console extends Component {
       autofocus: true, //自动获得焦点
       extraKeys: { 'Ctrl': 'autocomplete' } //按 ctrl 出现代码提示或补全代码
     }
-    const style = {
-      section: {
-        width: '50%',
-        float: 'left'
-      },
-      output: {
-        width: '100%',
-        height: '40vh',
-        background: '#eee'
-      }
-    }
+
     const uploadprops = {
       // action: '//jsonplaceholder.typicode.com/posts/',
 			accept: '.js',
@@ -141,9 +131,10 @@ export default class Console extends Component {
             </Button>
           </Upload>
         </div>
-        <Row>
-          <Col span={12}>
+        <Row style={{flex:1}}>
+          <Col span={12} className="full-h">
             <CodeMirror
+              className="full-h"
               value={this.state.code}
               options={options}
               // onChange={(editor, data, value) => { }} 
@@ -153,8 +144,8 @@ export default class Console extends Component {
               }}
             />
           </Col>
-          <Col span={12}>
-            <div className="output" style={style.output}>
+          <Col span={12} className="full-h">
+            <div className="output full-h">
               {
                 this.state.outputList.map((e, idx) => <p key={idx}>{e}</p>)
               }

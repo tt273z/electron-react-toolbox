@@ -34,6 +34,9 @@
 }
 
 .console {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
   .button-row {
     margin-bottom: 16px;
     button {
@@ -41,6 +44,10 @@
     }	
   }
 
+  .output {
+    width: 100%;
+    background: #eee;
+  }
   .output p {
     position: relative;
     text-indent: 15px;
@@ -68,7 +75,7 @@
   }
 
   .CodeMirror {
-    height: 40vh;
+    height: 100%;
   }  
 }
 
