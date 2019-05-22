@@ -1,5 +1,6 @@
 # 开发工具箱 (React + Electron壳
 
+> react + react-router-dom + antd + electron
 
 ### `npm start`
 
