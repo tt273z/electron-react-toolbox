@@ -12,3 +12,28 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New",
     monospace;
 }
+.logo {
+  float: left;
+  width: 150px;
+}
+.App-title {
+  float: right;
+  margin: 0;
+  color: #fff;
+  font-family: Consolas;
+}
+.App-logo {
+  animation: App-logo-spin infinite 20s linear;
+  height: 50px;
+  pointer-events: none;
+  margin-left: -40px;
+}
+
+@keyframes App-logo-spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
