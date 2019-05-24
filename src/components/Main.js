@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import { Layout, Menu, Breadcrumb, Icon, } from 'antd';
-import logo from '../logo.svg';
+import logo from '../logo.png';
 import RouteConfig from '../router'
 import { HashRouter, Link } from 'react-router-dom';
 
@@ -14,7 +14,8 @@ const menuList = [{
 	children: [
 		{ key: '1', route: '/', title: '代码编辑器' },
 		{ key: '2', route: '/regexp', title: '密码正则工具' },
-		{ key: '4', route: '/templ', title: '模板语法转换' },
+    { key: '4', route: '/templ', title: '模板语法转换' },
+		{ key: '5', route: '/test', title: 'test' },    
 	]
 }, {
 	key: 'sub2',
@@ -38,18 +39,15 @@ const renderSubMenuItem = e => (
 
 class Main extends Component {
   render(){
-    const style = {
-      logo: {
-        float: 'left',
-        width: '150px'
-      }
-    }
     return (
 		<HashRouter>
       <Layout style={{ minHeight: '100vh' }}>
         <Header className="header">
-          <div className="logo" style={style.logo}><img src={logo} className="App-logo" alt="logo" /></div>
-          <Menu
+          <div className="logo">
+            <img src={logo} className="App-logo" alt="logo" />
+            <h1 className="App-title">Dev-Toolbox</h1>
+          </div>
+          {/* <Menu
             theme="dark"
             mode="horizontal"
             defaultSelectedKeys={['2']}
@@ -58,7 +56,7 @@ class Main extends Component {
             <Menu.Item key="1">nav 1</Menu.Item>
             <Menu.Item key="2">nav 2</Menu.Item>
             <Menu.Item key="3">nav 3</Menu.Item>
-          </Menu>
+          </Menu> */}
         </Header>
         <Layout>
           <Sider width={200} style={{ background: '#fff' }}>
