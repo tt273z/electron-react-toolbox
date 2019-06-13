@@ -49,15 +49,21 @@ export const codeOutputHandler = obj => {
     return 'donot know what it is'
   }
 }
-export const Mover = function(s) {
-  this.obj = document.querySelector(s);
+/**
+ * 可拖动div
+ * @param {String} title 可触发拖动的容器id
+ * @param {String} limit 限制拖动范围的容器id 非必填
+ */
+export const Mover = function (title, limit) {
+  this.obj = document.querySelector(title);
+  this.limit = document.querySelector(limit);
   this.startx = 0;
-  this.starty = 0;
-  this.startLeft = 0;
-  this.startTop = 0;
-  this.mainDiv = this.obj.parentNode.parentNode;
+  this.starty;
+  this.startLeft;
+  this.startTop;
+  this.drag = this.obj.parentNode;
   this.isDown = false;
-  this.originIndex = this.mainDiv.style.zIndex;
+  this.originIndex = this.drag.style.zIndex;
   var that = this;
 
   this.movedown = function (e) {
@@ -68,24 +74,32 @@ export const Mover = function(s) {
 
     that.isDown = true;
     that.obj.style.cursor = 'move';
-    that.mainDiv.style.zIndex = 1000;
+    that.drag.style.zIndex = 1000;
 
     that.startx = e.clientX;
     that.starty = e.clientY;
-    that.startLeft = parseInt(that.mainDiv.offsetLeft);
-    that.startTop = parseInt(that.mainDiv.offsetTop);
+    that.startLeft = parseInt(that.drag.offsetLeft);
+    that.startTop = parseInt(that.drag.offsetTop);
   }
   this.move = function (e) {
     e = e ? e : window.event;
     if (that.isDown) {
-      that.mainDiv.style.left = e.clientX - (that.startx - that.startLeft) + "px";
-      that.mainDiv.style.top = e.clientY - (that.starty - that.startTop) + "px";
+      let left = e.clientX - (that.startx - that.startLeft);
+      let top = e.clientY - (that.starty - that.startTop);
+      if (limit) {
+        left < 0 && (left = 0)
+        top < 0 && (top = 0)
+        left < that.limit.offsetWidth - that.drag.offsetWidth && (left = that.limit.offsetWidth - that.drag.offsetWidth)
+        top < that.limit.offsetHeight - that.drag.offsetHeight && (top = that.limit.offsetHeight - that.drag.offsetHeight)
+      }
+      that.drag.style.left = left + "px";
+      that.drag.style.top = top + "px";
     }
   }
   this.moveup = function () {
     that.isDown = false;
     that.obj.style.cursor = 'default';
-    that.mainDiv.style.zIndex = that.originIndex;
+    that.drag.style.zIndex = that.originIndex;
     if (!window.captureEvents) {
       this.releaseCapture();
     }
