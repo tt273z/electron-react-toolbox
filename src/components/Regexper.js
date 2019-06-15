@@ -44,11 +44,11 @@ export default class Regexper extends Component {
 		const formItemLayout = {
       labelCol: {
         xs: { span: 24 },
-        sm: { span: 2 },
+        md: { span: 4 },
       },
       wrapperCol: {
         xs: { span: 24 },
-        sm: { span: 20 },
+        md: { span: 20 },
 			},
 			labelAlign: 'left'
     };
@@ -63,7 +63,7 @@ export default class Regexper extends Component {
 			{ label: '3种字符', value: '1' },
 		]
 		return (
-			<div className="regexp">
+			<div className="regexp wrap">
 				<Form {...formItemLayout}>
 					<Form.Item label="长度限制">
 						<InputNumber value={this.state.minLength} onChange={e => {this.setState({ minLength: e })}} style={{width: 60}}/>&nbsp;-&nbsp;

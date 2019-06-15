@@ -95,7 +95,7 @@ export default class Triangle extends Component {
   render() {
     return (
       <div className="triangle">
-        <Row type="flex" justify="space-between" align="middle" style={{ maxWidth: 750, margin: '0 auto' }}>
+        <Row type="flex" justify="space-between" align="middle" className="wrap">
           <Col span={12}>
             <section>
               <p className="subtitle">方向</p>
