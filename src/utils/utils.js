@@ -51,17 +51,18 @@ export const codeOutputHandler = obj => {
 }
 /**
  * 可拖动div
- * @param {String} title 可触发拖动的容器id
- * @param {String} limit 限制拖动范围的容器id 非必填
+ * @param {String} title 可触发拖动的容器selector
+ * @param {String} limit 限制拖动范围的容器selector 非必填
  */
 export const Mover = function (title, limit) {
   this.obj = document.querySelector(title);
   this.limit = document.querySelector(limit);
   this.startx = 0;
-  this.starty;
-  this.startLeft;
-  this.startTop;
+  this.starty = 0;
+  this.startLeft = 0;
+  this.startTop = 0;
   this.drag = this.obj.parentNode;
+  // this.drag = this.obj;
   this.isDown = false;
   this.originIndex = this.drag.style.zIndex;
   var that = this;
