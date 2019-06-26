@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Icon, Radio, InputNumber } from 'antd';
-import { Mover } from '../utils/utils';
+import { Row, Col, Icon, Radio, InputNumber, Slider } from 'antd';
 
 const calculateVerticalLine = (long, short) => {
   return Number(Math.sqrt(Math.pow(long, 2) - Math.pow(short, 2))).toFixed(1)
@@ -17,7 +16,8 @@ export default class Triangle extends Component {
       height: 100,//三角形高
       color: '#592f95',
       direct: 'top',//三角形方向
-      isRightAngle: false
+      isRightAngle: false,
+      rAngle: 0
     }
 
   }
@@ -25,20 +25,20 @@ export default class Triangle extends Component {
   returnIconStyle = (color) => {
     return { fontSize: 40, cursor: 'pointer', color }
   }
-  onSetTriDirect (color, direct) {
-    this.setState({ color, direct }, ()=> this.onCreateTri())
+  onSetTriDirect(color, direct) {
+    this.setState({ color, direct }, () => this.onCreateTri())
   }
   onCreateTri = () => {
     let bWidth, bColor, halfWidth = this.state.width / 2, width = this.state.width, height = this.state.height, color = this.state.color, type = this.state.type
-    let verticalLine = type==0? calculateVerticalLine(width, halfWidth): height
+    let verticalLine = type == 0 ? calculateVerticalLine(width, halfWidth) : height
     // this.state.direct.indexOf('-') != -1? this.setState({ isRightAngle: true, type: 1 })
     //   : this.setState({ isRightAngle: false, type: 0 })
-    if(this.state.direct.indexOf('-') != -1) {//直角
-      if(this.state.type == 0) this.setState({ type: 1 })
+    if (this.state.direct.indexOf('-') != -1) {//直角
+      if (this.state.type == 0) this.setState({ type: 1 })
       this.setState({ isRightAngle: true, width, height })
     } else {
       this.setState({ isRightAngle: false })
-      if(!type) this.setState({ height: verticalLine })
+      if (!type) this.setState({ height: verticalLine })
     }
     switch (this.state.direct) {
       case 'top':
@@ -76,23 +76,30 @@ export default class Triangle extends Component {
       default:
         break
     }
-    this.setState({bWidth, bColor})
+    this.setState({ bWidth, bColor })
   }
   onWidthChange = width => {
-    if(this.state.isRightAngle&&this.state.type==1) { //等腰直角使宽高保持一致
+    if (this.state.isRightAngle && this.state.type == 1) { //等腰直角使宽高保持一致
       this.setState({ width, height: width }, () => this.onCreateTri())
     }
     this.setState({ width }, () => this.onCreateTri())
   }
   onHeightChange = height => {
-    if(this.state.isRightAngle&&this.state.type==1) {
+    if (this.state.isRightAngle && this.state.type == 1) {
       this.setState({ height, width: height }, () => this.onCreateTri())
     }
     this.setState({ height }, () => this.onCreateTri())
   }
   onTypeChange = e => {
     this.setState({ type: e.target.value })
-  } 
+  }
+
+  onRotateChange = value => {
+    this.setState({
+      rAngle: value,
+    });
+  };
+
   render() {
     return (
       <div className="triangle">
@@ -130,25 +137,50 @@ export default class Triangle extends Component {
                 <InputNumber min={1} max={300} value={this.state.height} onChange={this.onHeightChange} disabled={!this.state.type} />
               </div>
             </section>
+            <section>
+              <p className="subtitle">旋转角度</p>
+              <Row>
+                <Col span={24}>
+                  <Slider
+                    min={-180}
+                    max={180}
+                    marks={{'0': '0°', '-180': '-180°', '180': '180°', '-90': '-90°', '90': '90°' }}
+                    tipFormatter={val => val+'°'}
+                    onChange={this.onRotateChange}
+                    value={typeof this.state.rAngle === 'number' ? this.state.rAngle : 0}
+                  />
+                </Col>
+                {/* <Col span={6}>
+                  <InputNumber
+                    min={-180}
+                    max={180}
+                    style={{ marginLeft: 16 }}
+                    value={this.state.rAngle}
+                    onChange={this.onRotateChange}
+                  />
+                </Col> */}
+              </Row>
+            </section>
           </Col>
           <Col span={12}>
             <div className="tri-box">
-              <div className="tri" style={{ borderWidth: this.state.bWidth, borderColor: this.state.bColor }}></div>
+              <div className="tri" style={{ borderWidth: this.state.bWidth, borderColor: this.state.bColor, transform: 'rotate('+this.state.rAngle+'deg)' }}></div>
             </div>
           </Col>
           <Col span={24}>
             <section>
               <p className="subtitle">CSS</p>
               <div className="css-code">
-                .tri {'{'}<br/>
-                  &nbsp;&nbsp;width: 0;<br/>
-                  &nbsp;&nbsp;height: 0;<br/>
-                  &nbsp;&nbsp;border-style: solid;<br/>
-                  &nbsp;&nbsp;border-width: { this.state.bWidth };<br/>
-                  &nbsp;&nbsp;border-color: { this.state.bColor };<br/>
+                .tri {'{'}<br />
+                &nbsp;&nbsp;width: 0;<br />
+                &nbsp;&nbsp;height: 0;<br />
+                &nbsp;&nbsp;border-style: solid;<br />
+                &nbsp;&nbsp;border-width: {this.state.bWidth};<br />
+                &nbsp;&nbsp;border-color: {this.state.bColor};<br />
+                &nbsp;&nbsp;transform: rotateZ({this.state.rAngle}deg) ;<br />
                 {'}'}
               </div>
-            </section>          
+            </section>
           </Col>
         </Row>
       </div>
