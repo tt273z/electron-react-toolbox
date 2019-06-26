@@ -9,7 +9,6 @@ import { loadScript, codeOutputHandler, removeElement } from '../utils/utils.js'
 
 const Option = Select.Option
 
-//TODO 快捷键
 export default class Console extends Component {
   constructor(props) {
     super(props)
