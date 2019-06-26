@@ -21,7 +21,6 @@
     - 在线test
 - 三角形 CSS 生成
     - 方向/类型/宽高可选择
-    - 可拖动 TODO
     - 可旋转角度 TODO
 - 模板语法转换
     - es6模板语法转换为普通字符串连接
@@ -66,6 +65,8 @@ electron-packager <location of project> <name of project> <platform> <location o
 
 为了简便可直接配置 package.json 中的 scripts 添加，每次 `npm run package`可以直接打包：
 
-```
+```shell
 "package": "electron-packager ./build ert --win --out=release --arch=x64 --app-version=0.1.0 --electron-version=4.0.4 --overwrite --icon=./public/favicon.ico"
 ```
+
+> note: build文件夹下需要添加 [main.js](https://github.com/mengQ99/electron-react-toolbox/blob/master/main.js) 和 [package.json](https://github.com/mengQ99/electron-react-toolbox/blob/master/package.json) 文件，否则打包出的exe运行报错。
