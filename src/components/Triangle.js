@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Row, Col, Icon, Radio, InputNumber } from 'antd';
+import { Mover } from '../utils/utils';
 
 const calculateVerticalLine = (long, short) => {
   return Number(Math.sqrt(Math.pow(long, 2) - Math.pow(short, 2))).toFixed(1)
 }
-//TODO 1三角形可拖动 3旋转角度
+
 export default class Triangle extends Component {
   constructor(props) {
     super(props)
@@ -18,8 +19,10 @@ export default class Triangle extends Component {
       direct: 'top',//三角形方向
       isRightAngle: false
     }
+
+    this.onSetTriDirect = this.onSetTriDirect.bind(this)
+
   }
-  componentDidUpdate(){ }
 
   returnIconStyle = (color) => {
     return { fontSize: 40, cursor: 'pointer', color }
@@ -100,16 +103,16 @@ export default class Triangle extends Component {
             <section>
               <p className="subtitle">方向</p>
               <div className="direct-box">
-                <Icon type="caret-up" className="i-top-left" style={this.returnIconStyle('#f11e27')} rotate="-45" onClick={() => this.onSetTriDirect('#f11e27', 'top-left')} />
-                <Icon type="caret-up" className="i-top" style={this.returnIconStyle('#592f95')} onClick={() => this.onSetTriDirect('#592f95', 'top')} />
-                <Icon type="caret-up" className="i-top-right" style={this.returnIconStyle('#0465b2')} rotate="45" onClick={() => this.onSetTriDirect('#0465b2', 'top-right')} />
+                <Icon type="caret-up" className="i-top-left" style={this.returnIconStyle('#f11e27')} rotate="-45" onClick={this.onSetTriDirect('#f11e27', 'top-left')} />
+                <Icon type="caret-up" className="i-top" style={this.returnIconStyle('#592f95')} onClick={this.onSetTriDirect('#592f95', 'top')} />
+                <Icon type="caret-up" className="i-top-right" style={this.returnIconStyle('#0465b2')} rotate="45" onClick={this.onSetTriDirect('#0465b2', 'top-right')} />
                 <br />
-                <Icon type="caret-left" className="i-left" style={this.returnIconStyle('#f58225')} onClick={() => this.onSetTriDirect('#f58225', 'left')} />
-                <Icon type="caret-right" className="i-right fr" style={this.returnIconStyle('#00acac')} onClick={() => this.onSetTriDirect('#00acac', 'right')} />
+                <Icon type="caret-left" className="i-left" style={this.returnIconStyle('#f58225')} onClick={this.onSetTriDirect('#f58225', 'left')} />
+                <Icon type="caret-right" className="i-right fr" style={this.returnIconStyle('#00acac')} onClick={this.onSetTriDirect('#00acac', 'right')} />
                 <br />
-                <Icon type="caret-down" className="i-bottom-left" style={this.returnIconStyle('#f8a51b')} rotate="45" onClick={() => this.onSetTriDirect('#f8a51b', 'bottom-left')} />
-                <Icon type="caret-down" className="i-bottom" style={this.returnIconStyle('#fef102')} onClick={() => this.onSetTriDirect('#fef102', 'bottom')} />
-                <Icon type="caret-down" className="i-bottom-right" style={this.returnIconStyle('#03a45e')} rotate="-45" onClick={() => this.onSetTriDirect('#03a45e', 'bottom-right')} />
+                <Icon type="caret-down" className="i-bottom-left" style={this.returnIconStyle('#f8a51b')} rotate="45" onClick={this.onSetTriDirect('#f8a51b', 'bottom-left')} />
+                <Icon type="caret-down" className="i-bottom" style={this.returnIconStyle('#fef102')} onClick={this.onSetTriDirect('#fef102', 'bottom')} />
+                <Icon type="caret-down" className="i-bottom-right" style={this.returnIconStyle('#03a45e')} rotate="-45" onClick={this.onSetTriDirect('#03a45e', 'bottom-right')} />
               </div>
             </section>
             <section>
